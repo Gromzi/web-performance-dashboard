@@ -1,0 +1,11 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #fdfdfd;
+}
+
+/* Unused selectors (intentional inefficiency) */
+div.redundant-class1,
+.redundant-class2,
+.redundant-class3 {
+  color: red;
+}
