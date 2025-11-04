@@ -1,10 +1,10 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Dashboard from "./pages/Dashboard";
-import Reports from "./pages/Reports";
-import About from "./pages/About";
-import Navbar from "./components/Navbar";
-import Footer from "./components/Footer";
-import "./styles.css";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
+import Dashboard from "./pages/Dashboard"
+import Reports from "./pages/Reports"
+import About from "./pages/About"
+import Navbar from "./components/Navbar"
+import Footer from "./components/Footer"
+import "./styles.css"
 
 function App() {
   return (
@@ -17,7 +17,7 @@ function App() {
       </Routes>
       <Footer />
     </Router>
-  );
+  )
 }
 
-export default App;
+export default App

@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link } from "react-router-dom"
 
 export default function Navbar() {
   return (
@@ -6,5 +6,5 @@ export default function Navbar() {
       <Link to="/">Dashboard</Link> | <Link to="/reports">Reports</Link> |{" "}
       <Link to="/about">About</Link>
     </nav>
-  );
+  )
 }
