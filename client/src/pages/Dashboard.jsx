@@ -9,7 +9,7 @@ export default function Dashboard() {
   // 🚨 Suboptimal: no dependency array -> causes infinite re-fetch
   useEffect(() => {
     fetchMetrics().then(setMetrics)
-  })
+  }, [])
 
   return (
     <div style={{ padding: "1rem" }}>

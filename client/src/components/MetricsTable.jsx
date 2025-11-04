@@ -22,5 +22,5 @@ export default function MetricsTable({ data }) {
         ))}
       </tbody>
     </table>
-  );
+  )
 }
