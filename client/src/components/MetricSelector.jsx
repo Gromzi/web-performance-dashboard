@@ -1,4 +1,6 @@
-export default function MetricSelector({ metrics, selectedMetrics, onChange }) {
+import React from "react"
+
+function MetricSelector({ metrics, selectedMetrics, onChange }) {
   const handleToggle = (metric) => {
     if (selectedMetrics.includes(metric)) {
       onChange(selectedMetrics.filter((m) => m !== metric))
@@ -6,6 +8,8 @@ export default function MetricSelector({ metrics, selectedMetrics, onChange }) {
       onChange([...selectedMetrics, metric])
     }
   }
+
+  console.log("MetricSelector rendered")
 
   return (
     <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
@@ -48,3 +52,6 @@ export default function MetricSelector({ metrics, selectedMetrics, onChange }) {
     </div>
   )
 }
+
+// export default React.memo(MetricSelector)
+export default MetricSelector

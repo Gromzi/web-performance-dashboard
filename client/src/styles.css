@@ -1,6 +1,8 @@
 body {
   font-family: Arial, sans-serif;
   background-color: #fdfdfd;
+  background: url("../public/background.jpg") no-repeat center center fixed;
+  background-size: cover;
 }
 
 /* Unused selectors (intentional inefficiency) */
@@ -8,4 +10,88 @@ div.redundant-class1,
 .redundant-class2,
 .redundant-class3 {
   color: red;
+}
+
+.large-unused-class {
+  width: 100%;
+  height: 100vh;
+  background-color: #ff0000;
+  animation: spin 10s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.redundant-1 {
+  color: red;
+}
+.redundant-2 {
+  color: blue;
+}
+.redundant-3 {
+  color: red;
+}
+.redundant-4 {
+  color: blue;
+}
+.redundant-5 {
+  color: red;
+}
+.redundant-6 {
+  color: blue;
+}
+.redundant-7 {
+  color: red;
+}
+.redundant-8 {
+  color: blue;
+}
+.redundant-9 {
+  color: red;
+}
+.redundant-10 {
+  color: blue;
+}
+.redundant-11 {
+  color: red;
+}
+.redundant-12 {
+  color: blue;
+}
+.redundant-13 {
+  color: red;
+}
+.redundant-14 {
+  color: blue;
+}
+.redundant-15 {
+  color: red;
+}
+.redundant-16 {
+  color: blue;
+}
+
+.redundant-17 {
+  color: red;
+}
+.redundant-18 {
+  color: blue;
+}
+.redundant-19 {
+  color: red;
+}
+.redundant-20 {
+  color: blue;
+}
+.redundant-21 {
+  color: red;
+}
+.redundant-22 {
+  color: blue;
 }

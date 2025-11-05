@@ -20,7 +20,7 @@ ChartJS.register(
 
 export default function ChartView({ data, metrics, page }) {
   // Downsample for readability (still fetches all)
-  const MAX_POINTS = 250
+  const MAX_POINTS = 500
   const sortedData = [...data].sort(
     (a, b) => new Date(a.timestamp) - new Date(b.timestamp)
   )
@@ -101,7 +101,7 @@ export default function ChartView({ data, metrics, page }) {
       style={{
         width: "100%",
         height: "500px",
-        background: "#1f1818ff",
+        backgroundColor: "#1f1818ff",
         padding: "1rem",
         boxSizing: "border-box",
         borderRadius: "8px",

@@ -10,7 +10,9 @@ export default function Reports() {
   })
 
   return (
-    <div style={{ padding: "1rem" }}>
+    <div
+      style={{ marginTop: "5rem", backgroundColor: "#fff", padding: "1rem" }}
+    >
       <h2>Average Metrics Report</h2>
       <p>LCP: {report.avgLCP?.toFixed(2)} ms</p>
       <p>FID: {report.avgFID?.toFixed(2)} ms</p>

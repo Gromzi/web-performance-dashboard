@@ -1,18 +1,26 @@
-const express = require("express");
-const router = express.Router();
-const Metric = require("../models/Metric");
+const express = require("express")
+const router = express.Router()
+const Metric = require("../models/Metric")
 
 // Inefficient: recomputes averages each time
 router.get("/", async (req, res) => {
-  const metrics = await Metric.find();
-  const avgLCP =
-    metrics.reduce((acc, m) => acc + (m.lcp || 0), 0) / metrics.length || 0;
-  const avgFID =
-    metrics.reduce((acc, m) => acc + (m.fid || 0), 0) / metrics.length || 0;
-  const avgCLS =
-    metrics.reduce((acc, m) => acc + (m.cls || 0), 0) / metrics.length || 0;
+  const metrics = await Metric.find()
+  let sumLCP = 0,
+    sumFID = 0,
+    sumCLS = 0
 
-  res.json({ avgLCP, avgFID, avgCLS });
-});
+  for (let i = 0; i < metrics.length; i++) {
+    for (let j = 0; j < 1000; j++) {
+      sumLCP += metrics[i].lcp / (j + 1)
+      sumFID += metrics[i].fid / (j + 1)
+      sumCLS += metrics[i].cls / (j + 1)
+    }
+  }
 
-module.exports = router;
+  const avgLCP = sumLCP / metrics.length
+  const avgFID = sumFID / metrics.length
+  const avgCLS = sumCLS / metrics.length
+  res.json({ avgLCP, avgFID, avgCLS })
+})
+
+module.exports = router

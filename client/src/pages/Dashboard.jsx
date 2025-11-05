@@ -1,21 +1,45 @@
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState, useCallback } from "react"
 import { fetchMetrics } from "../utils/api"
 import ChartView from "../components/ChartView"
 import MetricSelector from "../components/MetricSelector"
 
 export default function Dashboard() {
   const [metrics, setMetrics] = useState([])
-  const [selectedPage, setSelectedPage] = useState("")
-  const [selectedMetrics, setSelectedMetrics] = useState([])
-  const [selectedDate, setSelectedDate] = useState("")
+  const [selectedPage, setSelectedPage] = useState("Home")
+  const [selectedMetrics, setSelectedMetrics] = useState([
+    "lcp",
+    "fid",
+    "cls",
+    "ttfb",
+  ])
+  const [selectedDate, setSelectedDate] = useState("2025-11-04")
   const [filteredData, setFilteredData] = useState([])
+  const [result, setResult] = useState(null)
 
-  // Fetch all data once (still intentionally inefficient)
+  // console.log("Dashboard rendered")
+
   useEffect(() => {
-    fetchMetrics().then(setMetrics)
-  }, [])
+    const heavyComputation = (arr) => {
+      let sum = 0
+      for (let i = 0; i < 5000000; i++) {
+        sum += Math.sqrt(i) * Math.random()
+      }
+      return sum + arr.length
+    }
+
+    const interval = setInterval(() => {
+      fetchMetrics()
+        .then(setMetrics)
+        .then(() => {
+          setResult(heavyComputation(metrics))
+        })
+    }, 3000)
+
+    return () => clearInterval(interval)
+  })
 
   const pageOptions = [...new Set(metrics.map((m) => m.page))]
+  // const metricOptions = useMemo(() => ["lcp", "fid", "cls", "ttfb"], [])
   const metricOptions = ["lcp", "fid", "cls", "ttfb"]
 
   useEffect(() => {
@@ -38,8 +62,10 @@ export default function Dashboard() {
   const ready = selectedPage && selectedMetrics.length > 0 && selectedDate
 
   return (
-    <div style={{ padding: "1rem" }}>
-      <h1>Web Performance Dashboard</h1>
+    <div
+      style={{ marginTop: "5rem", padding: "1rem", backgroundColor: "#fff" }}
+    >
+      <h1>Web Performance Dashboard. Result: {result}</h1>
 
       <div
         style={{
@@ -80,7 +106,10 @@ export default function Dashboard() {
           <input
             type="date"
             value={selectedDate}
-            onChange={(e) => setSelectedDate(e.target.value)}
+            onChange={(e) => {
+              console.log("date", e.target.value)
+              setSelectedDate(e.target.value)
+            }}
             style={{ marginLeft: "0.5rem" }}
           />
         </label>
