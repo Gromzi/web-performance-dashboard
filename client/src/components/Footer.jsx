@@ -9,7 +9,7 @@ export default function Footer() {
         textAlign: "center",
         backgroundColor: "#1f1818ff",
         color: "#fff",
-        padding: "1rem",
+        padding: "0.25rem",
       }}
     >
       <p>Web Performance Dashboard © 2025</p>

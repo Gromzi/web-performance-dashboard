@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState, useCallback } from "react"
 import { fetchMetrics } from "../utils/api"
 import ChartView from "../components/ChartView"
 import MetricSelector from "../components/MetricSelector"
+import MetricsTable from "../components/MetricsTable"
 
 export default function Dashboard() {
   const [metrics, setMetrics] = useState([])
@@ -63,9 +64,14 @@ export default function Dashboard() {
 
   return (
     <div
-      style={{ marginTop: "5rem", padding: "1rem", backgroundColor: "#fff" }}
+      style={{
+        marginTop: "5rem",
+        marginBottom: "6rem",
+        padding: "1rem",
+        backgroundColor: "#fff",
+      }}
     >
-      <h1>Web Performance Dashboard. Result: {result}</h1>
+      <h1>Web Performance Dashboard. Some computation: {result}</h1>
 
       <div
         style={{
@@ -117,11 +123,15 @@ export default function Dashboard() {
 
       {ready ? (
         filteredData.length > 0 ? (
-          <ChartView
-            data={filteredData}
-            metrics={selectedMetrics}
-            page={selectedPage}
-          />
+          <>
+            <ChartView
+              data={filteredData}
+              metrics={selectedMetrics}
+              page={selectedPage}
+            />
+
+            <MetricsTable data={filteredData} metrics={selectedMetrics} />
+          </>
         ) : (
           <p>No data for selected parameters.</p>
         )
