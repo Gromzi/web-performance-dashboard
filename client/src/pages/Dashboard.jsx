@@ -113,7 +113,6 @@ export default function Dashboard() {
             type="date"
             value={selectedDate}
             onChange={(e) => {
-              console.log("date", e.target.value)
               setSelectedDate(e.target.value)
             }}
             style={{ marginLeft: "0.5rem" }}

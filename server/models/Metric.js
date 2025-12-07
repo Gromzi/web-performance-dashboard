@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require("mongoose")
 
 const MetricSchema = new mongoose.Schema({
   page: String,
@@ -7,6 +7,8 @@ const MetricSchema = new mongoose.Schema({
   cls: Number,
   ttfb: Number,
   timestamp: Date,
-});
+})
 
-module.exports = mongoose.model("Metric", MetricSchema);
+MetricSchema.index({ lcp: 1, fid: 1, cls: 1, ttfb: 1 })
+
+module.exports = mongoose.model("Metric", MetricSchema)
