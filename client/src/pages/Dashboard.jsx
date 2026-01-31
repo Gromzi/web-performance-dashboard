@@ -3,6 +3,7 @@ import { fetchMetrics } from "../utils/api"
 import ChartView from "../components/ChartView"
 import MetricSelector from "../components/MetricSelector"
 import MetricsTable from "../components/MetricsTable"
+import "../dashboard.css"
 
 export default function Dashboard() {
   const [metrics, setMetrics] = useState([])
@@ -16,8 +17,21 @@ export default function Dashboard() {
   const [selectedDate, setSelectedDate] = useState("2025-11-04")
   const [filteredData, setFilteredData] = useState([])
   const [result, setResult] = useState(null)
+  const [showBanner, setShowBanner] = useState(false)
+  const [showInsights, setShowInsights] = useState(false)
 
   // console.log("Dashboard rendered")
+
+  useEffect(() => {
+    // Simulate async condition (e.g. config fetch, feature flag, API response)
+    setTimeout(() => {
+      setShowBanner(true)
+    }, 800)
+
+    setTimeout(() => {
+      setShowInsights(true)
+    }, 1200)
+  }, [])
 
   useEffect(() => {
     const heavyComputation = (arr) => {
@@ -63,14 +77,51 @@ export default function Dashboard() {
   const ready = selectedPage && selectedMetrics.length > 0 && selectedDate
 
   return (
-    <div
-      style={{
-        marginTop: "5rem",
-        marginBottom: "6rem",
-        padding: "1rem",
-        backgroundColor: "#fff",
-      }}
-    >
+    <div className="dashboard-page">
+      {showBanner && (
+        <div className="dashboard-banner">
+          <strong>Performance update</strong>
+          <p>
+            New performance metrics were collected and recalculated based on the
+            latest dataset. Chart values may differ from previous results.
+          </p>
+
+          <p
+            onClick={() => setShowBanner(false)}
+            style={{
+              marginTop: "1rem",
+              color: "rgb(204, 58, 58)",
+              cursor: "pointer",
+              textDecorationLine: "underline",
+            }}
+          >
+            Discard
+          </p>
+        </div>
+      )}
+
+      {showInsights && (
+        <section className="insights-banner">
+          <h2>AI Insights</h2>
+          <p>
+            Based on recent data, performance degradation was detected on mobile
+            devices.
+          </p>
+
+          <p
+            onClick={() => setShowInsights(false)}
+            style={{
+              marginTop: "1rem",
+              color: "rgb(204, 58, 58)",
+              cursor: "pointer",
+              textDecorationLine: "underline",
+            }}
+          >
+            Discard
+          </p>
+        </section>
+      )}
+
       <h1>Web Performance Dashboard. Some computation: {result}</h1>
 
       <div

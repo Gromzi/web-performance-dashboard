@@ -101,7 +101,7 @@ export default function ChartView({ data, metrics, page }) {
       style={{
         width: "100%",
         height: "500px",
-        backgroundColor: "#1f1818ff",
+        backgroundColor: "rgb(255, 255, 255)",
         padding: "1rem",
         boxSizing: "border-box",
         borderRadius: "8px",
