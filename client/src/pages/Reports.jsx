@@ -6,7 +6,7 @@ export default function Reports() {
 
   useEffect(() => {
     fetchReports().then(setReport)
-  })
+  }, [])
 
   return (
     <div

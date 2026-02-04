@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, useCallback } from "react"
+import { useEffect, useState } from "react"
 import { fetchMetrics } from "../utils/api"
 import ChartView from "../components/ChartView"
 import MetricSelector from "../components/MetricSelector"
@@ -19,6 +19,7 @@ export default function Dashboard() {
   const [result, setResult] = useState(null)
   const [showBanner, setShowBanner] = useState(false)
   const [showInsights, setShowInsights] = useState(false)
+  const [refreshLoading, setRefreshLoading] = useState(false)
 
   useEffect(() => {
     setTimeout(() => {
@@ -31,24 +32,30 @@ export default function Dashboard() {
   }, [])
 
   useEffect(() => {
-    const heavyComputation = (arr) => {
-      let sum = 0
-      for (let i = 0; i < 5000000; i++) {
-        sum += Math.sqrt(i) * Math.random()
-      }
-      return sum + arr.length
+    requestMetrics()
+  }, [])
+
+  const heavyComputation = (arr) => {
+    let sum = 0
+    for (let i = 0; i < 5000000; i++) {
+      sum += Math.sqrt(i) * Math.random()
     }
+    return sum + arr.length
+  }
 
-    const interval = setInterval(() => {
-      fetchMetrics()
-        .then(setMetrics)
-        .then(() => {
-          setResult(heavyComputation(metrics))
-        })
-    }, 3000)
+  const requestMetrics = async () => {
+    setRefreshLoading(true)
 
-    return () => clearInterval(interval)
-  })
+    try {
+      const newMetrics = await fetchMetrics()
+      setMetrics(newMetrics)
+      setResult(heavyComputation(newMetrics))
+    } catch (error) {
+      console.error("Failed to fetch metrics:", error)
+    } finally {
+      setRefreshLoading(false)
+    }
+  }
 
   const pageOptions = [...new Set(metrics.map((m) => m.page))]
   const metricOptions = ["lcp", "fid", "cls", "ttfb"]
@@ -119,6 +126,14 @@ export default function Dashboard() {
       )}
 
       <h1>Web Performance Dashboard. Some computation: {result}</h1>
+
+      <button
+        onClick={requestMetrics}
+        disabled={refreshLoading}
+        style={{ marginBottom: "1rem" }}
+      >
+        Request new data
+      </button>
 
       <div
         style={{
