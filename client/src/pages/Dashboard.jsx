@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, useCallback } from "react"
+import { useEffect, useState } from "react"
 import { fetchMetrics } from "../utils/api"
 import ChartView from "../components/ChartView"
 import MetricSelector from "../components/MetricSelector"
@@ -39,15 +39,11 @@ export default function Dashboard() {
       return sum + arr.length
     }
 
-    const interval = setInterval(() => {
-      fetchMetrics()
-        .then(setMetrics)
-        .then(() => {
-          setResult(heavyComputation(metrics))
-        })
-    }, 3000)
-
-    return () => clearInterval(interval)
+    fetchMetrics()
+      .then(setMetrics)
+      .then(() => {
+        setResult(heavyComputation(metrics))
+      })
   })
 
   const pageOptions = [...new Set(metrics.map((m) => m.page))]
