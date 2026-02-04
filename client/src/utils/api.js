@@ -1,6 +1,6 @@
 export const fetchMetrics = async () => {
   const res = await fetch("http://localhost:4000/api/metrics")
-  return res.json() // No caching
+  return res.json()
 }
 
 export const fetchReports = async () => {

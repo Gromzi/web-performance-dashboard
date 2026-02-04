@@ -19,7 +19,6 @@ ChartJS.register(
 )
 
 export default function ChartView({ data, metrics, page }) {
-  // Downsample for readability (still fetches all)
   const MAX_POINTS = 500
   const sortedData = [...data].sort(
     (a, b) => new Date(a.timestamp) - new Date(b.timestamp)
@@ -58,7 +57,6 @@ export default function ChartView({ data, metrics, page }) {
     },
   }
 
-  // Build multiple datasets dynamically
   const datasets = metrics.map((metric) => {
     const style = metricStyles[metric] || metricStyles.lcp
     return {

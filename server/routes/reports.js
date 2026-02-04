@@ -2,12 +2,9 @@ const express = require("express")
 const router = express.Router()
 const Metric = require("../models/Metric")
 
-// Intentionally terrible reporting route
 router.get("/", async (req, res) => {
-  // Fetch all metrics (no filtering, no pagination)
   const metrics = await Metric.find()
 
-  // Extreme CPU work: O(n²) nested loop
   let sumLCP = 0,
     sumFID = 0,
     sumCLS = 0
@@ -24,7 +21,6 @@ router.get("/", async (req, res) => {
   const avgFID = sumFID / metrics.length
   const avgCLS = sumCLS / metrics.length
 
-  // Simulate slow JSON serialization (double stringify)
   const output = JSON.stringify({ avgLCP, avgFID, avgCLS })
   const doubleSerialized = JSON.stringify(output)
 

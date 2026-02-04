@@ -53,5 +53,4 @@ function MetricSelector({ metrics, selectedMetrics, onChange }) {
   )
 }
 
-// export default React.memo(MetricSelector)
 export default MetricSelector

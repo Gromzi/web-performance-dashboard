@@ -20,10 +20,7 @@ export default function Dashboard() {
   const [showBanner, setShowBanner] = useState(false)
   const [showInsights, setShowInsights] = useState(false)
 
-  // console.log("Dashboard rendered")
-
   useEffect(() => {
-    // Simulate async condition (e.g. config fetch, feature flag, API response)
     setTimeout(() => {
       setShowBanner(true)
     }, 800)
@@ -54,7 +51,6 @@ export default function Dashboard() {
   })
 
   const pageOptions = [...new Set(metrics.map((m) => m.page))]
-  // const metricOptions = useMemo(() => ["lcp", "fid", "cls", "ttfb"], [])
   const metricOptions = ["lcp", "fid", "cls", "ttfb"]
 
   useEffect(() => {
