@@ -19,7 +19,7 @@ ChartJS.register(
 )
 
 export default function ChartView({ data, metrics, page }) {
-  const MAX_POINTS = 500
+  const MAX_POINTS = 200
   const sortedData = [...data].sort(
     (a, b) => new Date(a.timestamp) - new Date(b.timestamp)
   )
