@@ -19,7 +19,7 @@ ChartJS.register(
   Legend
 )
 
-export default function ChartView({ data, metrics, page }) {
+export default function ChartView({ data, metrics }) {
   const reducedData = useMemo(() => {
     const MAX_POINTS = 200
 
@@ -74,7 +74,7 @@ export default function ChartView({ data, metrics, page }) {
         const style = metricStyles[metric] || metricStyles.lcp
 
         return {
-          label: `${metric.toUpperCase()} for ${page}`,
+          label: `${metric.toUpperCase()}`,
           data: reducedData.map((d) => d[metric]),
           borderColor: style.color,
           backgroundColor: style.background,
@@ -83,7 +83,7 @@ export default function ChartView({ data, metrics, page }) {
           tension: 0.3,
         }
       }),
-    [metrics, reducedData, page]
+    [metrics, reducedData]
   )
 
   const chartData = useMemo(

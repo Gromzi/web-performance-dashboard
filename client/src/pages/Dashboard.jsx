@@ -66,28 +66,11 @@ export default function Dashboard() {
   )
   const metricOptions = useMemo(() => ["lcp", "fid", "cls", "ttfb"], [])
 
-  // useEffect(() => {
-  //   if (!selectedPage || selectedMetrics.length === 0 || !selectedDate) {
-  //     setFilteredData([])
-  //     return
-  //   }
-
-  //   const filtered = metrics
-  //     .filter((m) => m.page === selectedPage)
-  //     .filter((m) => {
-  //       const dateStr = new Date(m.timestamp).toISOString().slice(0, 10)
-  //       return dateStr === selectedDate
-  //     })
-  //     .sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp))
-
-  //   setFilteredData(filtered)
-  // }, [metrics, selectedPage, selectedMetrics, selectedDate])
-
   useEffect(() => {
     setFilteredData(metrics)
   }, [metrics])
 
-  const ready = selectedPage && selectedMetrics.length > 0 && selectedDate
+  const ready = selectedPage && selectedMetrics.length > 0
 
   return (
     <div className="dashboard-page">
@@ -149,23 +132,10 @@ export default function Dashboard() {
         )}
       </div>
 
-      <h1>Web Performance Dashboard. Some computation: {result}</h1>
-      <button
-        onClick={requestMetrics}
-        disabled={refreshLoading || !ready}
-        style={{ marginBottom: "1rem" }}
-      >
-        Request new data
-      </button>
-      <div
-        style={{
-          display: "flex",
-          gap: "1rem",
-          alignItems: "center",
-          marginBottom: "1rem",
-          flexWrap: "wrap",
-        }}
-      >
+      <h1>{`Web Performance Dashboard.${
+        result ? ` Some computation ${result}` : ""
+      }`}</h1>
+      <div style={{ display: "flex", gap: "20px" }}>
         {/* Page Selector */}
         <label>
           Page:
@@ -183,13 +153,6 @@ export default function Dashboard() {
           </select>
         </label>
 
-        {/* Metric Selector */}
-        <MetricSelector
-          metrics={metricOptions}
-          selectedMetrics={selectedMetrics}
-          onChange={setSelectedMetrics}
-        />
-
         {/* Date Selector */}
         <label>
           Date:
@@ -202,20 +165,44 @@ export default function Dashboard() {
             style={{ marginLeft: "0.5rem" }}
           />
         </label>
+
+        <button
+          onClick={requestMetrics}
+          disabled={refreshLoading || !ready}
+          style={{ marginBottom: "1rem" }}
+        >
+          Request new data
+        </button>
+      </div>
+
+      <div
+        style={{
+          display: "flex",
+          gap: "1rem",
+          alignItems: "center",
+          marginBottom: "1rem",
+          flexWrap: "wrap",
+        }}
+      >
+        {/* Metric Selector */}
+        <MetricSelector
+          metrics={metricOptions}
+          selectedMetrics={selectedMetrics}
+          onChange={setSelectedMetrics}
+        />
       </div>
       {ready ? (
         filteredData.length > 0 ? (
           <>
-            <ChartView
-              data={filteredData}
-              metrics={selectedMetrics}
-              page={selectedPage}
-            />
+            <ChartView data={filteredData} metrics={selectedMetrics} />
 
             <MetricsTable data={filteredData} metrics={selectedMetrics} />
           </>
         ) : (
-          <p>No data for selected parameters.</p>
+          <p>
+            No data for selected parameters. Try requesting new data with
+            different parameters.
+          </p>
         )
       ) : (
         <p>Please select a page, metric, and date to visualize data.</p>
