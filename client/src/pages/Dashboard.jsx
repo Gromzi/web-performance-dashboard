@@ -30,9 +30,9 @@ export default function Dashboard() {
     }, 1200)
   }, [])
 
-  useEffect(() => {
-    requestMetrics()
-  }, [])
+  // useEffect(() => {
+  //   requestMetrics()
+  // }, [])
 
   const heavyComputation = (arr) => {
     let sum = 0
@@ -46,7 +46,11 @@ export default function Dashboard() {
     setRefreshLoading(true)
 
     try {
-      const newMetrics = await fetchMetrics()
+      const newMetrics = await fetchMetrics({
+        page: selectedPage,
+        date: selectedDate,
+      })
+
       setMetrics(newMetrics)
       setResult(heavyComputation(newMetrics))
     } catch (error) {
@@ -56,25 +60,32 @@ export default function Dashboard() {
     }
   }
 
-  const pageOptions = [...new Set(metrics.map((m) => m.page))]
+  const pageOptions = useMemo(
+    () => ["Home", "About", "Dashboard", "Contact", "Settings", "Profile"],
+    []
+  )
   const metricOptions = useMemo(() => ["lcp", "fid", "cls", "ttfb"], [])
 
+  // useEffect(() => {
+  //   if (!selectedPage || selectedMetrics.length === 0 || !selectedDate) {
+  //     setFilteredData([])
+  //     return
+  //   }
+
+  //   const filtered = metrics
+  //     .filter((m) => m.page === selectedPage)
+  //     .filter((m) => {
+  //       const dateStr = new Date(m.timestamp).toISOString().slice(0, 10)
+  //       return dateStr === selectedDate
+  //     })
+  //     .sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp))
+
+  //   setFilteredData(filtered)
+  // }, [metrics, selectedPage, selectedMetrics, selectedDate])
+
   useEffect(() => {
-    if (!selectedPage || selectedMetrics.length === 0 || !selectedDate) {
-      setFilteredData([])
-      return
-    }
-
-    const filtered = metrics
-      .filter((m) => m.page === selectedPage)
-      .filter((m) => {
-        const dateStr = new Date(m.timestamp).toISOString().slice(0, 10)
-        return dateStr === selectedDate
-      })
-      .sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp))
-
-    setFilteredData(filtered)
-  }, [metrics, selectedPage, selectedMetrics, selectedDate])
+    setFilteredData(metrics)
+  }, [metrics])
 
   const ready = selectedPage && selectedMetrics.length > 0 && selectedDate
 
@@ -141,7 +152,7 @@ export default function Dashboard() {
       <h1>Web Performance Dashboard. Some computation: {result}</h1>
       <button
         onClick={requestMetrics}
-        disabled={refreshLoading}
+        disabled={refreshLoading || !ready}
         style={{ marginBottom: "1rem" }}
       >
         Request new data

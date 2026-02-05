@@ -1,3 +1,4 @@
+import { useMemo } from "react"
 import { Line } from "react-chartjs-2"
 import {
   Chart as ChartJS,
@@ -19,19 +20,29 @@ ChartJS.register(
 )
 
 export default function ChartView({ data, metrics, page }) {
-  const MAX_POINTS = 200
-  const sortedData = [...data].sort(
-    (a, b) => new Date(a.timestamp) - new Date(b.timestamp)
-  )
-  const step = Math.max(1, Math.floor(sortedData.length / MAX_POINTS))
-  const reducedData = sortedData.filter((_, i) => i % step === 0)
+  const reducedData = useMemo(() => {
+    const MAX_POINTS = 200
 
-  const labels = reducedData.map((d) =>
-    new Date(d.timestamp).toLocaleTimeString("en-US", {
-      hour: "2-digit",
-      minute: "2-digit",
-      second: "2-digit",
-    })
+    if (!data || data.length === 0) return []
+
+    const sorted = [...data].sort(
+      (a, b) => new Date(a.timestamp) - new Date(b.timestamp)
+    )
+
+    const step = Math.max(1, Math.floor(sorted.length / MAX_POINTS))
+    return sorted.filter((_, i) => i % step === 0)
+  }, [data])
+
+  const labels = useMemo(
+    () =>
+      reducedData.map((d) =>
+        new Date(d.timestamp).toLocaleTimeString("en-US", {
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit",
+        })
+      ),
+    [reducedData]
   )
 
   const metricStyles = {
@@ -57,23 +68,31 @@ export default function ChartView({ data, metrics, page }) {
     },
   }
 
-  const datasets = metrics.map((metric) => {
-    const style = metricStyles[metric] || metricStyles.lcp
-    return {
-      label: `${metric.toUpperCase()} for ${page}`,
-      data: reducedData.map((d) => d[metric]),
-      borderColor: style.color,
-      backgroundColor: style.background,
-      borderWidth: style.borderWidth,
-      pointRadius: 0,
-      tension: 0.3,
-    }
-  })
+  const datasets = useMemo(
+    () =>
+      metrics.map((metric) => {
+        const style = metricStyles[metric] || metricStyles.lcp
 
-  const chartData = {
-    labels,
-    datasets,
-  }
+        return {
+          label: `${metric.toUpperCase()} for ${page}`,
+          data: reducedData.map((d) => d[metric]),
+          borderColor: style.color,
+          backgroundColor: style.background,
+          borderWidth: style.borderWidth,
+          pointRadius: 0,
+          tension: 0.3,
+        }
+      }),
+    [metrics, reducedData, page]
+  )
+
+  const chartData = useMemo(
+    () => ({
+      labels,
+      datasets,
+    }),
+    [labels, datasets]
+  )
 
   const options = {
     responsive: true,
