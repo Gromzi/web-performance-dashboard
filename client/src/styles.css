@@ -1,7 +1,8 @@
 body {
   font-family: Arial, sans-serif;
   background-color: #fdfdfd;
-  background: url("../public/background.jpg") no-repeat center center fixed;
+  background: url("../public/background_compressed.avif") no-repeat center
+    center fixed;
   background-size: cover;
 }
 

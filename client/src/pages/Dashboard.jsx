@@ -8,14 +8,9 @@ import "../styles.css"
 
 export default function Dashboard() {
   const [metrics, setMetrics] = useState([])
-  const [selectedPage, setSelectedPage] = useState("Home")
-  const [selectedMetrics, setSelectedMetrics] = useState([
-    "lcp",
-    "fid",
-    "cls",
-    "ttfb",
-  ])
-  const [selectedDate, setSelectedDate] = useState("2025-11-04")
+  const [selectedPage, setSelectedPage] = useState("")
+  const [selectedMetrics, setSelectedMetrics] = useState([])
+  const [selectedDate, setSelectedDate] = useState("")
   const [filteredData, setFilteredData] = useState([])
   const [result, setResult] = useState(null)
   const [showBanner, setShowBanner] = useState(true)
