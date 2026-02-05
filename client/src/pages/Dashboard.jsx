@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState, useMemo } from "react"
 import { fetchMetrics } from "../utils/api"
 import ChartView from "../components/ChartView"
 import MetricSelector from "../components/MetricSelector"
 import MetricsTable from "../components/MetricsTable"
 import "../dashboard.css"
+import "../styles.css"
 
 export default function Dashboard() {
   const [metrics, setMetrics] = useState([])
@@ -17,17 +18,20 @@ export default function Dashboard() {
   const [selectedDate, setSelectedDate] = useState("2025-11-04")
   const [filteredData, setFilteredData] = useState([])
   const [result, setResult] = useState(null)
-  const [showBanner, setShowBanner] = useState(false)
-  const [showInsights, setShowInsights] = useState(false)
+  const [showBanner, setShowBanner] = useState(true)
+  const [showInsights, setShowInsights] = useState(true)
+  const [bannerLoading, setBannerLoading] = useState(true)
+  const [insightsLoading, setInsightsLoading] = useState(true)
+
   const [refreshLoading, setRefreshLoading] = useState(false)
 
   useEffect(() => {
     setTimeout(() => {
-      setShowBanner(true)
+      setBannerLoading(false)
     }, 800)
 
     setTimeout(() => {
-      setShowInsights(true)
+      setInsightsLoading(false)
     }, 1200)
   }, [])
 
@@ -58,7 +62,7 @@ export default function Dashboard() {
   }
 
   const pageOptions = [...new Set(metrics.map((m) => m.page))]
-  const metricOptions = ["lcp", "fid", "cls", "ttfb"]
+  const metricOptions = useMemo(() => ["lcp", "fid", "cls", "ttfb"], [])
 
   useEffect(() => {
     if (!selectedPage || selectedMetrics.length === 0 || !selectedDate) {
@@ -81,52 +85,65 @@ export default function Dashboard() {
 
   return (
     <div className="dashboard-page">
-      {showBanner && (
-        <div className="dashboard-banner">
-          <strong>Performance update</strong>
-          <p>
-            New performance metrics were collected and recalculated based on the
-            latest dataset. Chart values may differ from previous results.
-          </p>
+      <div
+        className="dashboard-banner"
+        style={{ display: showBanner ? "flex" : "none" }}
+      >
+        {!bannerLoading ? (
+          <>
+            <strong>Performance update</strong>
+            <p>
+              New performance metrics were collected and recalculated based on
+              the latest dataset. Chart values may differ from previous results.
+            </p>
 
-          <p
-            onClick={() => setShowBanner(false)}
-            style={{
-              marginTop: "1rem",
-              color: "rgb(204, 58, 58)",
-              cursor: "pointer",
-              textDecorationLine: "underline",
-            }}
-          >
-            Discard
-          </p>
-        </div>
-      )}
+            <p
+              onClick={() => setShowBanner(false)}
+              style={{
+                marginTop: "1rem",
+                color: "rgb(204, 58, 58)",
+                cursor: "pointer",
+                textDecorationLine: "underline",
+              }}
+            >
+              Discard
+            </p>
+          </>
+        ) : (
+          <div className="loader"></div>
+        )}
+      </div>
 
-      {showInsights && (
-        <section className="insights-banner">
-          <h2>AI Insights</h2>
-          <p>
-            Based on recent data, performance degradation was detected on mobile
-            devices.
-          </p>
+      <div
+        className="insights-banner"
+        style={{ display: showInsights ? "flex" : "none" }}
+      >
+        {!insightsLoading ? (
+          <>
+            <h2>AI Insights</h2>
+            <p>
+              Based on recent data, performance degradation was detected on
+              mobile devices.
+            </p>
 
-          <p
-            onClick={() => setShowInsights(false)}
-            style={{
-              marginTop: "1rem",
-              color: "rgb(204, 58, 58)",
-              cursor: "pointer",
-              textDecorationLine: "underline",
-            }}
-          >
-            Discard
-          </p>
-        </section>
-      )}
+            <p
+              onClick={() => setShowInsights(false)}
+              style={{
+                marginTop: "1rem",
+                color: "rgb(204, 58, 58)",
+                cursor: "pointer",
+                textDecorationLine: "underline",
+              }}
+            >
+              Discard
+            </p>
+          </>
+        ) : (
+          <div className="loader"></div>
+        )}
+      </div>
 
       <h1>Web Performance Dashboard. Some computation: {result}</h1>
-
       <button
         onClick={requestMetrics}
         disabled={refreshLoading}
@@ -134,7 +151,6 @@ export default function Dashboard() {
       >
         Request new data
       </button>
-
       <div
         style={{
           display: "flex",
@@ -181,7 +197,6 @@ export default function Dashboard() {
           />
         </label>
       </div>
-
       {ready ? (
         filteredData.length > 0 ? (
           <>
