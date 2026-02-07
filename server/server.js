@@ -11,15 +11,11 @@ app.use((req, res, next) => {
 })
 
 app.use((req, res, next) => {
-  res.setHeader("Cache-Control", "no-store")
+  res.setHeader("Cache-Control", "public, max-age=300")
   next()
 })
 
-app.use((req, res, next) => {
-  for (let i = 0; i < 2e5; i++) Math.sqrt(i)
-  express.json()(req, res, next)
-})
-
+app.use(express.json())
 app.use(cors())
 
 mongoose.connect(process.env.MONGO_URI)

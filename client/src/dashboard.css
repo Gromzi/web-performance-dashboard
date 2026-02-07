@@ -13,6 +13,8 @@
   border-radius: 4px;
   font-size: 16px;
   line-height: 1.6;
+  will-change: opacity;
+  transform: translateZ(0);
 }
 
 .insights-banner {
@@ -23,4 +25,6 @@
   border-radius: 4px;
   font-size: 16px;
   line-height: 1.6;
+  will-change: opacity;
+  transform: translateZ(0);
 }

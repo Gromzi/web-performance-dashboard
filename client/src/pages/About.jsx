@@ -8,7 +8,13 @@ export default function About() {
         This is a deliberately suboptimal web app used for testing web
         performance optimization.
       </p>
-      <img src="/large-banner.png" alt="banner" width="100%" />
+      <img
+        src="/large-banner.png"
+        alt="banner"
+        width="100%"
+        loading="lazy"
+        decoding="async"
+      />
     </div>
   )
 }

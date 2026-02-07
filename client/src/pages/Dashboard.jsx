@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState, useMemo } from "react"
 import { fetchMetrics } from "../utils/api"
 import ChartView from "../components/ChartView"
 import MetricSelector from "../components/MetricSelector"
@@ -16,7 +16,6 @@ export default function Dashboard() {
   ])
   const [selectedDate, setSelectedDate] = useState("2025-11-04")
   const [filteredData, setFilteredData] = useState([])
-  const [result, setResult] = useState(null)
   const [showBanner, setShowBanner] = useState(false)
   const [showInsights, setShowInsights] = useState(false)
 
@@ -31,6 +30,10 @@ export default function Dashboard() {
   }, [])
 
   useEffect(() => {
+    fetchMetrics().then(setMetrics)
+  }, [])
+
+  const result = useMemo(() => {
     const heavyComputation = (arr) => {
       let sum = 0
       for (let i = 0; i < 5000000; i++) {
@@ -38,15 +41,13 @@ export default function Dashboard() {
       }
       return sum + arr.length
     }
+    return heavyComputation(metrics)
+  }, [metrics])
 
-    fetchMetrics()
-      .then(setMetrics)
-      .then(() => {
-        setResult(heavyComputation(metrics))
-      })
-  })
-
-  const pageOptions = [...new Set(metrics.map((m) => m.page))]
+  const pageOptions = useMemo(
+    () => [...new Set(metrics.map((m) => m.page))],
+    [metrics]
+  )
   const metricOptions = ["lcp", "fid", "cls", "ttfb"]
 
   useEffect(() => {

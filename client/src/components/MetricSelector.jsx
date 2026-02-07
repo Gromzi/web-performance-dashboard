@@ -9,8 +9,6 @@ function MetricSelector({ metrics, selectedMetrics, onChange }) {
     }
   }
 
-  console.log("MetricSelector rendered")
-
   return (
     <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
       <label>Metrics:</label>
@@ -53,4 +51,4 @@ function MetricSelector({ metrics, selectedMetrics, onChange }) {
   )
 }
 
-export default MetricSelector
+export default React.memo(MetricSelector)

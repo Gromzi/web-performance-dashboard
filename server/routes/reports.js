@@ -10,22 +10,17 @@ router.get("/", async (req, res) => {
     sumCLS = 0
 
   for (let i = 0; i < metrics.length; i++) {
-    for (let j = 0; j < metrics.length; j++) {
-      sumLCP += metrics[i].lcp / (j + 1)
-      sumFID += metrics[i].fid / (j + 1)
-      sumCLS += metrics[i].cls / (j + 1)
-    }
+    sumLCP += metrics[i].lcp
+    sumFID += metrics[i].fid
+    sumCLS += metrics[i].cls
   }
 
   const avgLCP = sumLCP / metrics.length
   const avgFID = sumFID / metrics.length
   const avgCLS = sumCLS / metrics.length
 
-  const output = JSON.stringify({ avgLCP, avgFID, avgCLS })
-  const doubleSerialized = JSON.stringify(output)
-
   res.setHeader("Content-Type", "application/json")
-  res.send(doubleSerialized)
+  res.json({ avgLCP, avgFID, avgCLS })
 })
 
 module.exports = router
