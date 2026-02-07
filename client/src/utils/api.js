@@ -10,6 +10,5 @@ export const fetchMetrics = async ({ page, date }) => {
 
 export const fetchReports = async () => {
   const res = await fetch("http://localhost:4000/api/reports")
-  const data = await res.json()
-  return JSON.parse(data)
+  return res.json()
 }
